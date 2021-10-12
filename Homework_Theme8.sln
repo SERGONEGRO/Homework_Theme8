@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Homework_Theme8", "Homework_Theme8\Homework_Theme8.csproj", "{27504325-E7B3-47C2-969D-479FE2D6DF0D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27504325-E7B3-47C2-969D-479FE2D6DF0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27504325-E7B3-47C2-969D-479FE2D6DF0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27504325-E7B3-47C2-969D-479FE2D6DF0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27504325-E7B3-47C2-969D-479FE2D6DF0D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3D6B04A1-CFE4-41DA-871D-E63AF63768BB}
+	EndGlobalSection
+EndGlobal
