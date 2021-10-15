@@ -86,19 +86,134 @@ namespace Homework_Theme8
         static void Main(string[] args)
         {
             Random rand = new Random();
-            
+
             Department[] deps = new Department[3]; //массив с департаментами
 
-            for (int i = 0; i<deps.Length; i++)
+            //заполняем департаменты
+            for (int i = 0; i < deps.Length; i++)       
             {
-                deps[i]  = new Department(i+1, rand.Next(8,12));
-                deps[i].PrintDepToConsole();
+                deps[i] = new Department(i + 1, rand.Next(5, 8));    
             }
             
-            //сортировка департмента по возрасту
-            deps[1].OrderDepartment();
-            deps[1].PrintDepToConsole();
+
             
+            string answer = "1";
+
+            do
+            {
+                Console.Clear();
+                Console.WriteLine($"\t\t***Всего департаментов : {deps.Length}***\n\n");
+                Console.WriteLine("\t\t----ВЫБЕРИТЕ ПУНКТ МЕНЮ----\n");
+                Console.WriteLine("1 - Показать все записи \n2 - Экспорт записей \n3 - Импорт записей \n" +
+                                  "4 - Редактирование Департаментов \n5 - Упорядочивание записей\n0 - ВЫХОД");
+
+                answer = Console.ReadLine();
+
+                switch (answer)
+                {
+                    case "1":   //показ всех записей
+                        {
+                            Console.Clear();
+
+                            for (int i = 0; i < deps.Length; i++)
+                            {
+                                deps[i].PrintDepToConsole();
+                            }
+                            Console.ReadKey();
+
+                            break;
+                        }
+                        
+                    case "2":   ///экспорт записей
+                        {
+                            Console.Clear();
+
+                            Console.WriteLine("Экспорт записей");
+                            Console.ReadKey();
+
+                            break;
+                        }
+                    case "3":   //импорт
+                        {
+                            Console.Clear();
+
+                            Console.WriteLine("Импорт записей");
+                            Console.ReadKey();
+
+                            break;
+                        }
+                    case "4":   //редактирование
+                        {
+                            Console.Clear();
+
+                            Console.WriteLine("Редактирование записей");
+                            Console.ReadKey();
+
+                            break;
+                        }
+                    case "5":   //упорядочивание
+                        {
+                            string answer5;
+                            do
+                            {
+
+                                Console.Clear();
+
+                                Console.WriteLine("\t\t----ВЫБЕРИТЕ ПУНКТ МЕНЮ----\n");
+                                Console.WriteLine("1 - Упорядочить по возрасту \n2 - Упорядочить по зарплате \n0 - ВЫХОД");
+
+                                answer5 = Console.ReadLine();
+
+                                switch (answer5)
+                                {
+                                    case "1":   //упорядочить по возрасту
+
+                                        {
+                                            Console.Clear();
+                                            for (int i = 0; i < deps.Length; i++)
+                                            {
+                                                deps[i].OrderDepartmentByAge();
+                                            }
+                                            Console.WriteLine("Упорядочивание по возрасту завершено!");
+                                            Console.ReadKey();
+
+                                            break;
+                                        }
+                                    case "2":   //упорядочить по зарплате
+
+                                        {
+                                            Console.Clear();
+                                            for (int i = 0; i < deps.Length; i++)
+                                            {
+                                                deps[i].OrderDepartmentBySalary();
+                                            }
+                                            Console.WriteLine("Упорядочивание по зарплате завершено!");
+                                            Console.ReadKey();
+                                            break;
+                                        }
+                                }
+                                
+                            }while (answer5 != "0");
+                        }
+                        break;
+
+
+                }
+            }
+            while (answer != "0");
+
+            //Department[] deps = new Department[3]; //массив с департаментами
+
+            //for (int i = 0; i<deps.Length; i++)
+            //{
+            //    deps[i]  = new Department(i+1, rand.Next(8,12));
+            //    deps[i].PrintDepToConsole();
+            //}
+
+            ////сортировка департмента по возрасту
+            //deps[1].OrderDepartment();
+            //deps[1].PrintDepToConsole();
+
         }
     }
 }

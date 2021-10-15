@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Homework_Theme8
 {
+    
+
     struct Department
     {
-
-
         #region Поля
 
         /// <summary>
@@ -77,8 +78,8 @@ namespace Homework_Theme8
         /// <param name="empCount">количество работников</param>
         public Department(int depNumber,int empCount)
         {
-            Random r = new Random();
-            
+            Thread.Sleep(1);   //для разных значений генератора
+            Random r = new Random(DateTime.Now.Millisecond);
             this.depId = depNumber;        
             this.depName = $"Department № {depNumber}";
             this.creationDate = new DateTime(2020, 10, depNumber);
@@ -117,10 +118,19 @@ namespace Homework_Theme8
             }
         }
 
-        public void OrderDepartment()
+        public void OrderDepartmentByAge()
         {
             var sortedTmp = from r in this.workers 
                             orderby r.Age
+                            select r;
+
+            this.workers = sortedTmp.ToList(); ;
+        }
+
+        public void OrderDepartmentBySalary()
+        {
+            var sortedTmp = from r in this.workers
+                            orderby r.Salary
                             select r;
 
             this.workers = sortedTmp.ToList(); ;
