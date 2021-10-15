@@ -26,7 +26,7 @@ namespace Homework_Theme8
         /// <summary>
         /// Дата создания
         /// </summary>
-        private DateTime creationDate;
+        private DateTime depCreationDate;
 
         ///// <summary>
         ///// Количество сотрудников в департаменте
@@ -60,7 +60,7 @@ namespace Homework_Theme8
         /// <summary>
         /// Дата создания
         /// </summary>
-        public DateTime CreaationDate { get { return this.creationDate; } set { this.creationDate = value; } }
+        public DateTime CreaationDate { get { return this.depCreationDate; } set { this.depCreationDate = value; } }
 
         ///// <summary>
         ///// Количество работников
@@ -82,7 +82,7 @@ namespace Homework_Theme8
             Random r = new Random(DateTime.Now.Millisecond);
             this.depId = depNumber;        
             this.depName = $"Department № {depNumber}";
-            this.creationDate = new DateTime(2020, 10, depNumber);
+            this.depCreationDate = new DateTime(2020, 03, depNumber);
             this.titles = new string[7] {"id","Имя", "Фамилия", "Возраст", "Департамент", "Зарплата", "Проектов", };
             this.workers = new List<Worker>();
 
@@ -94,7 +94,7 @@ namespace Homework_Theme8
                         $"Имя_{i}",
                         $"Фамилия_{i}",
                         (byte)r.Next(20,100),
-                        (uint)r.Next(1000, 2000),
+                        (uint)r.Next(10, 20)*1000,
                         this.depName,
                         (byte)r.Next(1,5)));
             }
@@ -110,7 +110,7 @@ namespace Homework_Theme8
         /// </summary>
         public void PrintDepToConsole()
         {
-            Console.WriteLine($"\nДепартамент № {depId}");
+            Console.WriteLine($"\nДепартамент № {depId}, Дата создания: {depCreationDate.ToShortDateString()}");
             Console.WriteLine($"{titles[0],3} {titles[1],10} {titles[2],20} {titles[3],10} {titles[4],15}  {titles[5],15} {titles[6],10}" );
             foreach (var item in workers)
             {
@@ -118,6 +118,9 @@ namespace Homework_Theme8
             }
         }
 
+        /// <summary>
+        /// Сортировка по возрасту
+        /// </summary>
         public void OrderDepartmentByAge()
         {
             var sortedTmp = from r in this.workers 
@@ -127,6 +130,9 @@ namespace Homework_Theme8
             this.workers = sortedTmp.ToList(); ;
         }
 
+        /// <summary>
+        /// сортировка по зарплате
+        /// </summary>
         public void OrderDepartmentBySalary()
         {
             var sortedTmp = from r in this.workers

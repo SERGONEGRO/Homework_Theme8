@@ -86,13 +86,12 @@ namespace Homework_Theme8
         static void Main(string[] args)
         {
             Random rand = new Random();
-
-            Department[] deps = new Department[3]; //массив с департаментами
-
-            //заполняем департаменты
-            for (int i = 0; i < deps.Length; i++)       
+            int depsCount = 3;                      //количество департаментов
+            //Department[] deps = new Department[depsCount]; //массив с департаментами
+            List<Department> deps = new List<Department>();            //заполняем департаменты
+            for (int i = 0; i < depsCount; i++)       
             {
-                deps[i] = new Department(i + 1, rand.Next(5, 8));    
+                deps.Add(new Department(i+1,rand.Next(5, 8)));    
             }
             
 
@@ -102,7 +101,7 @@ namespace Homework_Theme8
             do
             {
                 Console.Clear();
-                Console.WriteLine($"\t\t***Всего департаментов : {deps.Length}***\n\n");
+                Console.WriteLine($"\t\t***Всего департаментов : {deps.Count}***\n\n");
                 Console.WriteLine("\t\t----ВЫБЕРИТЕ ПУНКТ МЕНЮ----\n");
                 Console.WriteLine("1 - Показать все записи \n2 - Экспорт записей \n3 - Импорт записей \n" +
                                   "4 - Редактирование Департаментов \n5 - Упорядочивание записей\n0 - ВЫХОД");
@@ -115,7 +114,7 @@ namespace Homework_Theme8
                         {
                             Console.Clear();
 
-                            for (int i = 0; i < deps.Length; i++)
+                            for (int i = 0; i < deps.Count; i++)
                             {
                                 deps[i].PrintDepToConsole();
                             }
@@ -133,6 +132,7 @@ namespace Homework_Theme8
 
                             break;
                         }
+
                     case "3":   //импорт
                         {
                             Console.Clear();
@@ -142,15 +142,73 @@ namespace Homework_Theme8
 
                             break;
                         }
+
                     case "4":   //редактирование
                         {
-                            Console.Clear();
+                            string answer4;
+                            do
+                            {
 
-                            Console.WriteLine("Редактирование записей");
-                            Console.ReadKey();
+                                Console.Clear();
 
-                            break;
+                                Console.WriteLine("\t\t----ВЫБЕРИТЕ ПУНКТ МЕНЮ----\n");
+                                Console.WriteLine("1 - Добавить департамент \n2 - Редактировать департамент\n3 - Удалить департамент \n0 - ВЫХОД");
+
+                                answer4 = Console.ReadLine();
+
+                                switch (answer4)
+                                {
+                                    case "1":   //добавить департмент
+
+                                        {
+                                            Console.Clear();
+                                            
+                                            deps.Add(new Department(deps.Count+1, rand.Next(5,8)));
+
+                                            Console.WriteLine($"Департамент № {deps.Count} добавлен!"); ; ;
+                                            Console.ReadKey();
+
+                                            break;
+                                        }
+                                    case "2":   //Редактировать
+
+                                        {
+                                            Console.Clear();
+                                            for (int i = 0; i < deps.Count; i++)
+                                            {
+                                                deps[i].OrderDepartmentBySalary();
+                                            }
+                                            Console.WriteLine("Упорядочивание по зарплате завершено!");
+                                            Console.ReadKey();
+                                            break;
+                                        }
+
+                                    case "3":   //Удалить
+
+                                        {
+                                            int depNumToDelete;
+                                            Console.Clear();
+                                            
+                                            do
+                                            {
+                                                Console.WriteLine("Введите номер департамента:");
+                                                depNumToDelete = EnterNumber();
+                                            } while (depNumToDelete < 0 || depNumToDelete > deps.Count);
+
+                                            deps.RemoveAt(depNumToDelete);
+
+                                            Console.WriteLine("Департамент удален!");
+                                            
+                                            Console.ReadKey();
+                                            break;
+                                        }
+                                }
+
+                            } while (answer4 != "0");
                         }
+                        break;
+
+
                     case "5":   //упорядочивание
                         {
                             string answer5;
@@ -170,7 +228,7 @@ namespace Homework_Theme8
 
                                         {
                                             Console.Clear();
-                                            for (int i = 0; i < deps.Length; i++)
+                                            for (int i = 0; i < deps.Count; i++)
                                             {
                                                 deps[i].OrderDepartmentByAge();
                                             }
@@ -183,7 +241,7 @@ namespace Homework_Theme8
 
                                         {
                                             Console.Clear();
-                                            for (int i = 0; i < deps.Length; i++)
+                                            for (int i = 0; i < deps.Count; i++)
                                             {
                                                 deps[i].OrderDepartmentBySalary();
                                             }
@@ -202,18 +260,22 @@ namespace Homework_Theme8
             }
             while (answer != "0");
 
-            //Department[] deps = new Department[3]; //массив с департаментами
+            //Console.WriteLine(deps[1].workers[0].Age);
+        }
 
-            //for (int i = 0; i<deps.Length; i++)
-            //{
-            //    deps[i]  = new Department(i+1, rand.Next(8,12));
-            //    deps[i].PrintDepToConsole();
-            //}
 
-            ////сортировка департмента по возрасту
-            //deps[1].OrderDepartment();
-            //deps[1].PrintDepToConsole();
-
+        /// <summary>
+        /// Ввод числа 
+        /// </summary>
+        /// <returns>число</returns>
+        static public int EnterNumber()
+        {
+            int number;
+            while (!int.TryParse(Console.ReadLine(), out number))
+            {
+                Console.WriteLine("Ошибка ввода! Введите целое число");
+            }
+            return number;
         }
     }
 }
