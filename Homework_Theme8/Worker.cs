@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Homework_Theme8
 {
@@ -32,10 +33,40 @@ namespace Homework_Theme8
         #endregion
 
         #region Методы
-
+        /// <summary>
+        /// печать в консоль
+        /// </summary>
+        /// <returns></returns>
         public string Print()
         {
             return $"{this.id,5} {this.firstName,10} {this.lastName,20} {this.age,5} {this.department,20}  {this.salary,10} {this.projectsCount,8}";
+        }
+
+
+        /// <summary>
+        /// воркер в ХМЛ
+        /// </summary>
+        /// <returns></returns>
+        public XElement SerializeWorkerToXML()
+        {
+            XElement xConcreteWorker = new XElement("ConcreteWorker");
+            XAttribute xConcreteWokerId = new XAttribute("Id", this.id);
+            XAttribute xConcreteWokerFirstName = new XAttribute("FirstName", this.firstName);
+            XAttribute xConcreteWokerLastName = new XAttribute("LastName", this.lastName);
+            XAttribute xConcreteWokerAge = new XAttribute("Age", this.age);
+            XAttribute xConcreteWokerDepartment = new XAttribute("Department", this.department);
+            XAttribute xConcreteWokerSalary = new XAttribute("Salary", this.salary);
+            XAttribute xConcreteWokerProjectsCount = new XAttribute("ProjectsCount", this.projectsCount);
+
+            xConcreteWorker.Add(xConcreteWokerId,
+                                xConcreteWokerFirstName,
+                                xConcreteWokerLastName,
+                                xConcreteWokerAge,
+                                xConcreteWokerDepartment,
+                                xConcreteWokerSalary,
+                                xConcreteWokerProjectsCount);
+
+            return xConcreteWorker;
         }
 
         #endregion

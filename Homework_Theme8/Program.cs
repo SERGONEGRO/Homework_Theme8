@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 
 /// Создать прототип информационной системы, в которой есть возможност работать со структурой организации
@@ -126,8 +127,23 @@ namespace Homework_Theme8
                     case "2":   ///экспорт записей
                         {
                             Console.Clear();
+                            XElement myOrganization = new XElement("Organization");
+                            XElement xDepartment = new XElement("Department");
+                            XAttribute xDepId = new XAttribute("DepId",0);
+                            XAttribute xDepName = new XAttribute("DepName",deps[0].DepName);
+                            XAttribute xDepCreationDate = new XAttribute("DepCreationDate",deps[0].CreaationDate);
+                            XElement xDepWorkers = new XElement("Workers");
+                            XElement xConcreteWorker = new XElement("ConcreteWorker");
+                            XAttribute xConcreteWokerFirstName = new XAttribute("FirstName", deps[0].workers[0].FirstName);
+                            XAttribute xConcreteWokerLastName = new XAttribute("LastName", deps[0].workers[0].LastName);
 
-                            Console.WriteLine("Экспорт записей");
+                            myOrganization.Add(xDepartment);
+                            xDepartment.Add(xDepId, xDepName,xDepCreationDate,xDepWorkers);
+                            xDepWorkers.Add(xConcreteWorker);
+                            xConcreteWorker.Add(xConcreteWokerFirstName, xConcreteWokerLastName);
+                            myOrganization.Save("Organization.xml");
+                            
+                            Console.WriteLine("Экспорт записей завершен!");
                             Console.ReadKey();
 
                             break;
@@ -152,7 +168,7 @@ namespace Homework_Theme8
                                 Console.Clear();
 
                                 Console.WriteLine("\t\t----ВЫБЕРИТЕ ПУНКТ МЕНЮ----\n");
-                                Console.WriteLine("1 - Добавить департамент \n2 - Редактировать департамент\n3 - Удалить департамент \n0 - ВЫХОД");
+                                Console.WriteLine("1 - Добавить департамент \n2 - Редактировать департамент\n3 - Удалить департамент \n0 - ВЫХОД в предыдущее меню");
 
                                 answer4 = Console.ReadLine();
 
@@ -195,7 +211,7 @@ namespace Homework_Theme8
                                                 depNumToDelete = EnterNumber();
                                             } while (depNumToDelete < 0 || depNumToDelete > deps.Count);
 
-                                            deps.RemoveAt(depNumToDelete);
+                                            deps.RemoveAt(depNumToDelete-1);
 
                                             Console.WriteLine("Департамент удален!");
                                             
