@@ -119,6 +119,21 @@ namespace Homework_Theme8
             this.depName = depName;
             this.depCreationDate = DateTime.Parse(depDate);
             this.titles = new string[7] { "id", "Имя", "Фамилия", "Возраст", "Департамент", "Зарплата", "Проектов", };
+
+            var colworks = XDocument.Parse(works)
+                               .Descendants("ConcreteWorker")
+                               .ToList();
+            foreach (var item in colworks)
+            {
+                
+                this.workers.Add(new Worker(Convert.ToUInt32(item.Attribute("Id").Value),
+                                       item.Attribute("FirstName").Value,
+                                       item.Attribute("LastName").Value,
+                                       Convert.ToByte(item.Attribute("Age").Value),
+                                       Convert.ToUInt32(item.Attribute("Salary").Value),
+                                       item.Attribute("Department").Value,
+                                       Convert.ToByte(item.Attribute("ProjectsCount").Value)));
+            }
             this.workers =works;
         }
 
