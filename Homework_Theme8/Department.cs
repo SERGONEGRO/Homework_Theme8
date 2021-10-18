@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Homework_Theme8
 {
@@ -58,9 +59,14 @@ namespace Homework_Theme8
         public string DepName { get { return this.depName; } set { this.depName = value; } }
 
         /// <summary>
+        /// id
+        /// </summary>
+        public int DepId { get { return this.depId; } set { this.depId = value; } }
+
+        /// <summary>
         /// Дата создания
         /// </summary>
-        public DateTime CreaationDate { get { return this.depCreationDate; } set { this.depCreationDate = value; } }
+        public DateTime CreationDate { get { return this.depCreationDate; } set { this.depCreationDate = value; } }
 
         ///// <summary>
         ///// Количество работников
@@ -72,7 +78,7 @@ namespace Homework_Theme8
         #region Конструктор
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор Автоматической генерации
         /// </summary>
         /// <param name="depNumber">номер департамента</param>
         /// <param name="empCount">количество работников</param>
@@ -99,6 +105,21 @@ namespace Homework_Theme8
                         (byte)r.Next(1,5)));
             }
 
+        }
+
+
+        /// <summary>
+        /// Конструктор для ручной генерации
+        /// </summary>
+        /// <param name="depNumber">номер департамента</param>
+        /// <param name="empCount">количество работников</param>
+        public Department(int depNumber, string depName, string depDate,string works)
+        {
+            this.depId = depNumber;
+            this.depName = depName;
+            this.depCreationDate = DateTime.Parse(depDate);
+            this.titles = new string[7] { "id", "Имя", "Фамилия", "Возраст", "Департамент", "Зарплата", "Проектов", };
+            this.workers =works;
         }
 
         #endregion
@@ -141,6 +162,43 @@ namespace Homework_Theme8
 
             this.workers = sortedTmp.ToList(); ;
         }
+
+        /// <summary>
+        /// Департмент в ХМЛ
+        /// </summary>
+        /// <returns></returns>
+        public XElement SerializeDepartmentToXML()
+        {
+            XElement xConcreteDepartment = new XElement("ConcreteDepartment");
+            XAttribute xConcreteDepartmentId = new XAttribute("Id", this.depId);
+            XAttribute xConcreteDepartmentName = new XAttribute("FirstName", this.depName);
+            XAttribute xConcreteDepartmentCreationdate = new XAttribute("CreationDate", this.depCreationDate);
+            XElement xConcreteDepartmentWorkers = new XElement("Workers");
+            
+            foreach (var w in workers)
+            {
+                xConcreteDepartmentWorkers.Add(w.SerializeWorkerToXML());
+            }
+
+            xConcreteDepartment.Add(xConcreteDepartmentId,
+                                xConcreteDepartmentName,
+                                xConcreteDepartmentCreationdate,
+                                xConcreteDepartmentWorkers);
+
+            return xConcreteDepartment;
+        }
+
+        public void ParseDepartmentXml(List<Department> col)
+        {
+            int i = 0;
+            foreach (var item in col)
+            {
+                this.depId = item.Attribute("Id").Value;
+                this
+            }
+        }
+
+        
 
         #endregion
     }

@@ -87,10 +87,10 @@ namespace Homework_Theme8
         static void Main(string[] args)
         {
             Random rand = new Random();
-            int depsCount = 3;                      //количество департаментов
-            //Department[] deps = new Department[depsCount]; //массив с департаментами
+            int depsIndex = 3;                      //количество департаментов
+            
             List<Department> deps = new List<Department>();            //заполняем департаменты
-            for (int i = 0; i < depsCount; i++)       
+            for (int i = 0; i < depsIndex; i++)       
             {
                 deps.Add(new Department(i+1,rand.Next(5, 8)));    
             }
@@ -128,20 +128,12 @@ namespace Homework_Theme8
                         {
                             Console.Clear();
                             XElement myOrganization = new XElement("Organization");
-                            XElement xDepartment = new XElement("Department");
-                            XAttribute xDepId = new XAttribute("DepId",0);
-                            XAttribute xDepName = new XAttribute("DepName",deps[0].DepName);
-                            XAttribute xDepCreationDate = new XAttribute("DepCreationDate",deps[0].CreaationDate);
-                            XElement xDepWorkers = new XElement("Workers");
-                            XElement xConcreteWorker = new XElement("ConcreteWorker");
-                            XAttribute xConcreteWokerFirstName = new XAttribute("FirstName", deps[0].workers[0].FirstName);
-                            XAttribute xConcreteWokerLastName = new XAttribute("LastName", deps[0].workers[0].LastName);
+                            foreach (var d in deps)
+                            {
+                                myOrganization.Add(d.SerializeDepartmentToXML());
+                            }
 
-                            myOrganization.Add(xDepartment);
-                            xDepartment.Add(xDepId, xDepName,xDepCreationDate,xDepWorkers);
-                            xDepWorkers.Add(xConcreteWorker);
-                            xConcreteWorker.Add(xConcreteWokerFirstName, xConcreteWokerLastName);
-                            myOrganization.Save("Organization.xml");
+                            myOrganization.Save("OrganizationExport.xml");
                             
                             Console.WriteLine("Экспорт записей завершен!");
                             Console.ReadKey();
@@ -152,8 +144,26 @@ namespace Homework_Theme8
                     case "3":   //импорт
                         {
                             Console.Clear();
+                            deps.Clear();
+                            depsIndex = 0;
 
-                            Console.WriteLine("Импорт записей");
+                            string xml = System.IO.File.ReadAllText("OrganizationImport.xml");
+
+                            var col = XDocument.Parse(xml)
+                               .Descendants("Organization")
+                               .Descendants("ConcreteDepartment")
+                               .ToList();
+
+                            foreach (var item in col)
+                            {
+                                deps.Add(new Department(Convert.ToInt32(item.Attribute("Id").Value),
+                                                        item.Attribute("FirstName").Value,
+                                                        item.Attribute("CreationDate").Value,
+                                                        item.Attribute("Workers").Value));
+                                                       
+                            }
+
+                            Console.WriteLine("Импорт записей завершен!");
                             Console.ReadKey();
 
                             break;
@@ -178,10 +188,10 @@ namespace Homework_Theme8
 
                                         {
                                             Console.Clear();
-                                            
-                                            deps.Add(new Department(deps.Count+1, rand.Next(5,8)));
+                                            depsIndex++;
+                                            deps.Add(new Department(depsIndex, rand.Next(5,8)));
 
-                                            Console.WriteLine($"Департамент № {deps.Count} добавлен!"); ; ;
+                                            Console.WriteLine($"Департамент № {depsIndex} добавлен!"); ; ;
                                             Console.ReadKey();
 
                                             break;
