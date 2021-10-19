@@ -199,11 +199,19 @@ namespace Homework_Theme8
         /// </summary>
         public void OrderDepartmentByAge()
         {
-            this.workers = this.workers.OrderBy(i => i.Age).ToList();
-            foreach (var w in workers)
-            {
-                Console.WriteLine(w.Print());
-            }
+            List<Worker> result = this.workers;
+
+            result.Sort((b1, b2) => string.Compare(b1.Age.ToString(), b2.Age.ToString()));
+            this.workers = result;
+
+            //Этот способ не сохраняет результат:
+            //this.workers = this.workers.OrderBy(i => i.Age).ToList();
+
+            ////test
+            //foreach (var w in workers)
+            //{
+            //    Console.WriteLine(w.Print());
+            //}
         }
 
         /// <summary>
@@ -211,11 +219,19 @@ namespace Homework_Theme8
         /// </summary>
         public void OrderDepartmentBySalary()
         {
-            this.workers = this.workers.OrderBy(i => i.Salary).ToList();
-            foreach (var w in workers)
-            {
-                Console.WriteLine(w.Print());
-            }
+            List<Worker> result = this.workers;
+
+            result.Sort((b1, b2) => string.Compare(b1.Salary.ToString(), b2.Salary.ToString()));
+            this.workers = result;
+
+            //Этот способ не сохраняет результат:
+            //this.workers = this.workers.OrderBy(i => i.Salary).ToList();
+
+            ////test
+            //foreach (var w in workers)
+            //{
+            //    Console.WriteLine(w.Print());
+            //}
         }
 
         /// <summary>
