@@ -108,8 +108,8 @@ namespace Homework_Theme8
                 Console.Clear();
                 Console.WriteLine($"\t\t***Всего департаментов : {deps.Count}***\n\n");
                 Console.WriteLine("\t\t----ВЫБЕРИТЕ ПУНКТ МЕНЮ----\n");
-                Console.WriteLine("1 - Показать все записи \n2 - Экспорт записей \n3 - Импорт записей \n" +
-                                  "4 - Редактирование Департаментов \n5 - Упорядочивание записей\n0 - ВЫХОД");
+                Console.WriteLine("1 - Показать все записи \n2 - Экспорт записей \n3 - Импорт записей из XML\n" +
+                                  "4 - Импорт записей из JSON\n5 - Редактирование Департаментов \n6 - Упорядочивание записей\n0 - ВЫХОД");
 
                 answer = Console.ReadLine();
 
@@ -141,9 +141,7 @@ namespace Homework_Theme8
                             myOrganization.Save("OrganizationExport.xml");
 
                             //В JSON
-                            //string json = JsonConvert.SerializeObject(deps);
-                            //File.WriteAllText("Organization.json", json);
-
+                            
                             JObject mainTree = new JObject();
                             JArray jArray = new JArray();
 
@@ -159,14 +157,17 @@ namespace Homework_Theme8
 
                             string json = mainTree.ToString();
                             File.WriteAllText("OrganizationExport.json", json);
+
                             Console.WriteLine("Экспорт записей завершен!");
                             Console.ReadKey();
 
                             break;
                         }
 
-                    case "3":   //импорт
+                    case "3":   //импорт из XML
                         {
+
+                            //из XML
                             Console.Clear();
                             deps.Clear();
                             depsIndex = 0;
@@ -187,13 +188,51 @@ namespace Homework_Theme8
                                                         Department.GetWorkersXML(item.ToString())));
                             }
 
+
+                            //Из JSON
+
                             Console.WriteLine("Импорт записей завершен!");
                             Console.ReadKey();
 
                             break;
                         }
 
-                    case "4":   //редактирование
+                    case "4":   //импорт из Json
+                        {
+                            Console.Clear();
+                            deps.Clear();
+                            depsIndex = 0;
+
+                            string json = System.IO.File.ReadAllText("OrganizationImport.json");
+
+                            var departments = JObject.Parse(json)["Departments"].ToArray();
+
+                            //Console.WriteLine(departments[0]);
+                            //Console.WriteLine(JObject.Parse(json)["Departments"].ToString());
+                            //Console.WriteLine(json);
+
+                            //var col = XDocument.Parse(xml)
+                            //   .Descendants("Organization")
+                            //   .Descendants("ConcreteDepartment")
+                            //   .ToList();
+
+                            //foreach (var item in col)
+                            //{
+
+                            //    deps.Add(new Department(Convert.ToInt32(item.Attribute("Id").Value),
+                            //                            item.Attribute("FirstName").Value,
+                            //                            item.Attribute("CreationDate").Value,
+                            //                            Department.GetWorkersXML(item.ToString())));
+                            //}
+
+
+                            Console.WriteLine("Импорт записей завершен!");
+                            Console.ReadKey();
+
+                            break;
+                        }
+
+                    case "5":   //редактирование
                         {
                             string answer4;
                             do
@@ -255,7 +294,7 @@ namespace Homework_Theme8
                         break;
 
 
-                    case "5":   //упорядочивание
+                    case "6":   //упорядочивание
                         {
                             string answer5;
                             do

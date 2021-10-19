@@ -172,6 +172,32 @@ namespace Homework_Theme8
         }
 
         /// <summary>
+        /// Распарсивает JSON строку в массив воркеров
+        /// </summary>
+        /// <param name="s">Строка</param>
+        /// <returns>массив воркеров</returns>
+        public static List<Worker> GetWorkersJSON(string s)
+        {
+            var colWorks = XDocument.Parse(s)
+                                    .Descendants("Workers")
+                                    .Descendants("ConcreteWorker")
+                                    .ToList();
+
+            List<Worker> workers = new List<Worker>();
+            foreach (var item in colWorks)
+            {
+                workers.Add(new Worker(Convert.ToUInt32(item.Attribute("Id").Value),
+                                       item.Attribute("FirstName").Value,
+                                       item.Attribute("LastName").Value,
+                                       Convert.ToByte(item.Attribute("Age").Value),
+                                       Convert.ToUInt32(item.Attribute("Salary").Value),
+                                       item.Attribute("Department").Value,
+                                       Convert.ToByte(item.Attribute("ProjectsCount").Value)));
+            }
+            return workers;
+        }
+
+        /// <summary>
         /// Сортировка по возрасту
         /// </summary>
         public void OrderDepartmentByAge()
@@ -198,7 +224,7 @@ namespace Homework_Theme8
         /// <summary>
         /// Департмент в ХМЛ
         /// </summary>
-        /// <returns></returns>
+        /// <returns>объект XElement</returns>
         public XElement SerializeDepartmentToXML()
         {
             XElement xConcreteDepartment = new XElement("ConcreteDepartment");
@@ -220,6 +246,10 @@ namespace Homework_Theme8
             return xConcreteDepartment;
         }
 
+        /// <summary>
+        /// Департмент в Json
+        /// </summary>
+        /// <returns>объект JObject</returns>
         public JObject SerializeDepartmentToJson()
         {
             
