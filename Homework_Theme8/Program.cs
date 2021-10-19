@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.IO;
+
 
 
 /// Создать прототип информационной системы, в которой есть возможност работать со структурой организации
@@ -127,15 +131,31 @@ namespace Homework_Theme8
                     case "2":   ///экспорт записей
                         {
                             Console.Clear();
+
+                            ///В XML
                             XElement myOrganization = new XElement("Organization");
                             foreach (var d in deps)
                             {
                                 myOrganization.Add(d.SerializeDepartmentToXML());
                             }
-
                             myOrganization.Save("OrganizationExport.xml");
-                            
-                            Console.WriteLine("Экспорт записей завершен!");
+
+                            //В JSON
+                            string json = JsonConvert.SerializeObject(deps);
+                            File.WriteAllText("Organization.json", json);
+
+                            JArray jArray = new JArray();
+
+                            foreach (var d in deps)
+                            {
+                                JObject obj = new JObject
+
+                                 obj = d.Se
+
+                                jArray.Add(obj);
+                            }
+
+                                Console.WriteLine("Экспорт записей завершен!");
                             Console.ReadKey();
 
                             break;
@@ -156,11 +176,11 @@ namespace Homework_Theme8
 
                             foreach (var item in col)
                             {
+
                                 deps.Add(new Department(Convert.ToInt32(item.Attribute("Id").Value),
                                                         item.Attribute("FirstName").Value,
                                                         item.Attribute("CreationDate").Value,
-                                                        item.Attribute("Workers").Value));
-                                                       
+                                                        Department.GetWorkersXML(item.ToString())));
                             }
 
                             Console.WriteLine("Импорт записей завершен!");
@@ -244,7 +264,7 @@ namespace Homework_Theme8
                                 Console.Clear();
 
                                 Console.WriteLine("\t\t----ВЫБЕРИТЕ ПУНКТ МЕНЮ----\n");
-                                Console.WriteLine("1 - Упорядочить по возрасту \n2 - Упорядочить по зарплате \n0 - ВЫХОД");
+                                Console.WriteLine("1 - Упорядочить по возрасту \n2 - Упорядочить по зарплате \n0 - ВЫХОД В предыдущее меню");
 
                                 answer5 = Console.ReadLine();
 
@@ -254,10 +274,14 @@ namespace Homework_Theme8
 
                                         {
                                             Console.Clear();
-                                            for (int i = 0; i < deps.Count; i++)
+                                            foreach(var dep in deps)
                                             {
-                                                deps[i].OrderDepartmentByAge();
+                                                dep.OrderDepartmentByAge();
                                             }
+                                            //for (int i = 0; i < deps.Count; i++)
+                                            //{
+                                            //    deps[i].OrderDepartmentByAge();
+                                            //}
                                             Console.WriteLine("Упорядочивание по возрасту завершено!");
                                             Console.ReadKey();
 
@@ -267,9 +291,9 @@ namespace Homework_Theme8
 
                                         {
                                             Console.Clear();
-                                            for (int i = 0; i < deps.Count; i++)
+                                            foreach (var dep in deps)
                                             {
-                                                deps[i].OrderDepartmentBySalary();
+                                                dep.OrderDepartmentBySalary();
                                             }
                                             Console.WriteLine("Упорядочивание по зарплате завершено!");
                                             Console.ReadKey();

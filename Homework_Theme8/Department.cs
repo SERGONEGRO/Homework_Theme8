@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -107,34 +108,21 @@ namespace Homework_Theme8
 
         }
 
-
         /// <summary>
-        /// Конструктор для ручной генерации
+        /// Конструктор, собирающий департамент, используется для импорта из XML
         /// </summary>
-        /// <param name="depNumber">номер департамента</param>
-        /// <param name="empCount">количество работников</param>
-        public Department(int depNumber, string depName, string depDate,string works)
+        /// <param name="depNumber">ID департамента</param>
+        /// <param name="depName">Имя департамента</param>
+        /// <param name="depDate">Дата создания</param>
+        /// <param name="works">Массив воркеров</param>
+        public Department(int depNumber, string depName, string depDate, List<Worker> works)
         {
             this.depId = depNumber;
             this.depName = depName;
             this.depCreationDate = DateTime.Parse(depDate);
             this.titles = new string[7] { "id", "Имя", "Фамилия", "Возраст", "Департамент", "Зарплата", "Проектов", };
-
-            var colworks = XDocument.Parse(works)
-                               .Descendants("ConcreteWorker")
-                               .ToList();
-            foreach (var item in colworks)
-            {
-                
-                this.workers.Add(new Worker(Convert.ToUInt32(item.Attribute("Id").Value),
-                                       item.Attribute("FirstName").Value,
-                                       item.Attribute("LastName").Value,
-                                       Convert.ToByte(item.Attribute("Age").Value),
-                                       Convert.ToUInt32(item.Attribute("Salary").Value),
-                                       item.Attribute("Department").Value,
-                                       Convert.ToByte(item.Attribute("ProjectsCount").Value)));
-            }
-            this.workers =works;
+            this.workers = works;
+            
         }
 
         #endregion
@@ -152,6 +140,33 @@ namespace Homework_Theme8
             {
                 Console.WriteLine(item.Print());
             }
+        }
+
+
+        /// <summary>
+        /// Распарсивает XML строку в массив воркеров
+        /// </summary>
+        /// <param name="s">строка</param>
+        /// <returns>массив воркеров</returns>
+        public static List<Worker> GetWorkersXML(string s)
+        {
+            var colWorks = XDocument.Parse(s)
+                                    .Descendants("Workers")
+                                    .Descendants("ConcreteWorker")
+                                    .ToList();
+
+            List<Worker> workers = new List<Worker>();
+            foreach (var item in colWorks)
+            {
+                workers.Add(new Worker(Convert.ToUInt32(item.Attribute("Id").Value),
+                                       item.Attribute("FirstName").Value,
+                                       item.Attribute("LastName").Value,
+                                       Convert.ToByte(item.Attribute("Age").Value),
+                                       Convert.ToUInt32(item.Attribute("Salary").Value),
+                                       item.Attribute("Department").Value,
+                                       Convert.ToByte(item.Attribute("ProjectsCount").Value)));
+            }
+            return workers;
         }
 
         /// <summary>
@@ -203,17 +218,11 @@ namespace Homework_Theme8
             return xConcreteDepartment;
         }
 
-        public void ParseDepartmentXml(List<Department> col)
-        {
-            int i = 0;
-            foreach (var item in col)
-            {
-                this.depId = item.Attribute("Id").Value;
-                this
-            }
-        }
+        public string 
 
         
+
+
 
         #endregion
     }
