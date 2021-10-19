@@ -111,7 +111,7 @@ namespace Homework_Theme8
         }
 
         /// <summary>
-        /// Конструктор, собирающий департамент, используется для импорта из XML
+        /// Конструктор, собирающий департамент, используется для импорта из XML и JSON
         /// </summary>
         /// <param name="depNumber">ID департамента</param>
         /// <param name="depName">Имя департамента</param>
@@ -178,21 +178,18 @@ namespace Homework_Theme8
         /// <returns>массив воркеров</returns>
         public static List<Worker> GetWorkersJSON(string s)
         {
-            var colWorks = XDocument.Parse(s)
-                                    .Descendants("Workers")
-                                    .Descendants("ConcreteWorker")
-                                    .ToList();
+            var wrks = JObject.Parse(s)["workers"].ToArray();
 
             List<Worker> workers = new List<Worker>();
-            foreach (var item in colWorks)
+            foreach (var item in wrks)
             {
-                workers.Add(new Worker(Convert.ToUInt32(item.Attribute("Id").Value),
-                                       item.Attribute("FirstName").Value,
-                                       item.Attribute("LastName").Value,
-                                       Convert.ToByte(item.Attribute("Age").Value),
-                                       Convert.ToUInt32(item.Attribute("Salary").Value),
-                                       item.Attribute("Department").Value,
-                                       Convert.ToByte(item.Attribute("ProjectsCount").Value)));
+                workers.Add(new Worker(Convert.ToUInt32(item["ID"]),
+                                       item["FirstName"].ToString(),
+                                       item["LastName"].ToString(),
+                                       Convert.ToByte(item["Age"]),
+                                       Convert.ToUInt32(item["Salary"]),
+                                       item["Department"].ToString(),
+                                       Convert.ToByte(item["ProjectCount"])));
             }
             return workers;
         }
@@ -202,11 +199,11 @@ namespace Homework_Theme8
         /// </summary>
         public void OrderDepartmentByAge()
         {
-            var sortedTmp = from r in this.workers
-                            orderby r.Age
-                            select r;
-
-            this.workers = sortedTmp.ToList(); ;
+            this.workers = this.workers.OrderBy(i => i.Age).ToList();
+            foreach (var w in workers)
+            {
+                Console.WriteLine(w.Print());
+            }
         }
 
         /// <summary>
@@ -214,11 +211,11 @@ namespace Homework_Theme8
         /// </summary>
         public void OrderDepartmentBySalary()
         {
-            var sortedTmp = from r in this.workers
-                            orderby r.Salary
-                            select r;
-
-            this.workers = sortedTmp.ToList(); ;
+            this.workers = this.workers.OrderBy(i => i.Salary).ToList();
+            foreach (var w in workers)
+            {
+                Console.WriteLine(w.Print());
+            }
         }
 
         /// <summary>

@@ -2,11 +2,12 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using System.IO;
+
 
 
 
@@ -167,7 +168,6 @@ namespace Homework_Theme8
                     case "3":   //импорт из XML
                         {
 
-                            //из XML
                             Console.Clear();
                             deps.Clear();
                             depsIndex = 0;
@@ -188,9 +188,6 @@ namespace Homework_Theme8
                                                         Department.GetWorkersXML(item.ToString())));
                             }
 
-
-                            //Из JSON
-
                             Console.WriteLine("Импорт записей завершен!");
                             Console.ReadKey();
 
@@ -207,23 +204,14 @@ namespace Homework_Theme8
 
                             var departments = JObject.Parse(json)["Departments"].ToArray();
 
-                            //Console.WriteLine(departments[0]);
-                            //Console.WriteLine(JObject.Parse(json)["Departments"].ToString());
-                            //Console.WriteLine(json);
+                            foreach (var item in departments)
+                            {
 
-                            //var col = XDocument.Parse(xml)
-                            //   .Descendants("Organization")
-                            //   .Descendants("ConcreteDepartment")
-                            //   .ToList();
-
-                            //foreach (var item in col)
-                            //{
-
-                            //    deps.Add(new Department(Convert.ToInt32(item.Attribute("Id").Value),
-                            //                            item.Attribute("FirstName").Value,
-                            //                            item.Attribute("CreationDate").Value,
-                            //                            Department.GetWorkersXML(item.ToString())));
-                            //}
+                                deps.Add(new Department( Convert.ToInt32(item["ID"]),
+                                                         item["depName"].ToString() ,
+                                                         item["creationDate"].ToString() ,
+                                                         Department.GetWorkersJSON(item.ToString()) ));
+                            }
 
 
                             Console.WriteLine("Импорт записей завершен!");
@@ -317,10 +305,7 @@ namespace Homework_Theme8
                                             {
                                                 dep.OrderDepartmentByAge();
                                             }
-                                            //for (int i = 0; i < deps.Count; i++)
-                                            //{
-                                            //    deps[i].OrderDepartmentByAge();
-                                            //}
+                                            
                                             Console.WriteLine("Упорядочивание по возрасту завершено!");
                                             Console.ReadKey();
 
@@ -349,7 +334,6 @@ namespace Homework_Theme8
             }
             while (answer != "0");
 
-            //Console.WriteLine(deps[1].workers[0].Age);
         }
 
 
