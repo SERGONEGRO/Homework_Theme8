@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.IO;
+using System.Threading;
 
 namespace Homework_Theme8
 {
@@ -14,11 +18,13 @@ namespace Homework_Theme8
         /// <summary>
         /// Создание сотрудника
         /// </summary>
-        /// <param name="FirstName">Имя</param>
-        /// <param name="LastName">Фамилия</param>
-        /// <param name="Position">Должность</param>
-        /// <param name="Department">Отдел</param>
-        /// <param name="Salary">Оплата труда</param>
+        /// <param name="ID"></param>
+        /// <param name="FirstName"></param>
+        /// <param name="LastName"></param>
+        /// <param name="Age"></param>
+        /// <param name="Salary"></param>
+        /// <param name="Department"></param>
+        /// <param name="ProjectsCount"></param>
         public Worker(uint ID, string FirstName, string LastName, byte Age, uint Salary, string Department,byte ProjectsCount)
         {
             this.id = ID;
@@ -69,6 +75,21 @@ namespace Homework_Theme8
             return xConcreteWorker;
         }
 
+        public JObject SerializeWorkerToJson()
+        {
+            JObject jWorker = new JObject
+            {
+                ["ID"] = this.Id,
+                ["FirstName"] = this.FirstName,
+                ["LastName"] = this.LastName,
+                ["Age"] = this.Age,
+                ["Salary"] = this.Salary,
+                ["Department"] = this.Department,
+                ["ProjectCount"] = this.ProjectsCount
+            };
+            return jWorker;
+        }
+           
         #endregion
 
         #region Свойства

@@ -141,21 +141,25 @@ namespace Homework_Theme8
                             myOrganization.Save("OrganizationExport.xml");
 
                             //В JSON
-                            string json = JsonConvert.SerializeObject(deps);
-                            File.WriteAllText("Organization.json", json);
+                            //string json = JsonConvert.SerializeObject(deps);
+                            //File.WriteAllText("Organization.json", json);
 
+                            JObject mainTree = new JObject();
                             JArray jArray = new JArray();
+
+                            mainTree["Organization"] = "My Organization";
+                            mainTree["Departments"] = jArray;
 
                             foreach (var d in deps)
                             {
-                                JObject obj = new JObject
-
-                                 obj = d.Se
-
+                                JObject obj = d.SerializeDepartmentToJson();
+                                
                                 jArray.Add(obj);
                             }
 
-                                Console.WriteLine("Экспорт записей завершен!");
+                            string json = mainTree.ToString();
+                            File.WriteAllText("OrganizationExport.json", json);
+                            Console.WriteLine("Экспорт записей завершен!");
                             Console.ReadKey();
 
                             break;
@@ -220,11 +224,7 @@ namespace Homework_Theme8
 
                                         {
                                             Console.Clear();
-                                            for (int i = 0; i < deps.Count; i++)
-                                            {
-                                                deps[i].OrderDepartmentBySalary();
-                                            }
-                                            Console.WriteLine("Упорядочивание по зарплате завершено!");
+                                            Console.WriteLine("Редактирование завершено!");
                                             Console.ReadKey();
                                             break;
                                         }

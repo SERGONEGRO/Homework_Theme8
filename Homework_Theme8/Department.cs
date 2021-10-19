@@ -1,15 +1,17 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.IO;
+using System.Threading;
 
 namespace Homework_Theme8
 {
-    
+
 
     struct Department
     {
@@ -83,27 +85,27 @@ namespace Homework_Theme8
         /// </summary>
         /// <param name="depNumber">номер департамента</param>
         /// <param name="empCount">количество работников</param>
-        public Department(int depNumber,int empCount)
+        public Department(int depNumber, int empCount)
         {
             Thread.Sleep(1);   //для разных значений генератора
             Random r = new Random(DateTime.Now.Millisecond);
-            this.depId = depNumber;        
+            this.depId = depNumber;
             this.depName = $"Department № {depNumber}";
             this.depCreationDate = new DateTime(2020, 03, depNumber);
-            this.titles = new string[7] {"id","Имя", "Фамилия", "Возраст", "Департамент", "Зарплата", "Проектов", };
+            this.titles = new string[7] { "id", "Имя", "Фамилия", "Возраст", "Департамент", "Зарплата", "Проектов", };
             this.workers = new List<Worker>();
 
             for (int i = 1; i <= empCount; i++)
             {
                 workers.Add(
                     new Worker(
-                        (uint)(depNumber*1000+i),
+                        (uint)(depNumber * 1000 + i),
                         $"Имя_{i}",
                         $"Фамилия_{i}",
-                        (byte)r.Next(20,100),
-                        (uint)r.Next(10, 20)*1000,
+                        (byte)r.Next(20, 100),
+                        (uint)r.Next(10, 20) * 1000,
                         this.depName,
-                        (byte)r.Next(1,5)));
+                        (byte)r.Next(1, 5)));
             }
 
         }
@@ -122,7 +124,7 @@ namespace Homework_Theme8
             this.depCreationDate = DateTime.Parse(depDate);
             this.titles = new string[7] { "id", "Имя", "Фамилия", "Возраст", "Департамент", "Зарплата", "Проектов", };
             this.workers = works;
-            
+
         }
 
         #endregion
@@ -135,7 +137,7 @@ namespace Homework_Theme8
         public void PrintDepToConsole()
         {
             Console.WriteLine($"\nДепартамент № {depId}, Дата создания: {depCreationDate.ToShortDateString()}");
-            Console.WriteLine($"{titles[0],3} {titles[1],10} {titles[2],20} {titles[3],10} {titles[4],15}  {titles[5],15} {titles[6],10}" );
+            Console.WriteLine($"{titles[0],3} {titles[1],10} {titles[2],20} {titles[3],10} {titles[4],15}  {titles[5],15} {titles[6],10}");
             foreach (var item in workers)
             {
                 Console.WriteLine(item.Print());
@@ -174,7 +176,7 @@ namespace Homework_Theme8
         /// </summary>
         public void OrderDepartmentByAge()
         {
-            var sortedTmp = from r in this.workers 
+            var sortedTmp = from r in this.workers
                             orderby r.Age
                             select r;
 
@@ -204,7 +206,7 @@ namespace Homework_Theme8
             XAttribute xConcreteDepartmentName = new XAttribute("FirstName", this.depName);
             XAttribute xConcreteDepartmentCreationdate = new XAttribute("CreationDate", this.depCreationDate);
             XElement xConcreteDepartmentWorkers = new XElement("Workers");
-            
+
             foreach (var w in workers)
             {
                 xConcreteDepartmentWorkers.Add(w.SerializeWorkerToXML());
@@ -218,12 +220,34 @@ namespace Homework_Theme8
             return xConcreteDepartment;
         }
 
-        public string 
+        public JObject SerializeDepartmentToJson()
+        {
+            
+            JArray jArray = new JArray();
+            foreach (var w in this.workers)
+            {
+                JObject obj = w.SerializeWorkerToJson();
 
-        
+                jArray.Add(obj);
+            }
+
+            JObject jDep = new JObject
+            {
+                ["ID"] = this.DepId,
+                ["depName"] = this.DepName,
+                ["creationDate"] = this.CreationDate
+            };
+            jDep["workers"] = jArray;
+
+            
+            return jDep;
+        }
+    }
+
+
 
 
 
         #endregion
-    }
+    
 }
